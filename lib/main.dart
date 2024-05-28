@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sample/base/utils/shared_prefs/shared_pref_utils.dart';
 import 'package:sample/ui/hello_world/hello_world.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPrefUtils.getInstance();
+  runApp(ProviderScope(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences!),
+    ],
+    child: const MyApp(),
+  ));
 }
+
+final sharedPreferencesProvider =
+    Provider<SharedPreferences>((ref) => throw UnimplementedError());
 
 final helloWorldProvider = Provider((ref) {
   return "Hello";
@@ -46,38 +58,12 @@ class MyApp extends StatelessWidget {
 ///       error: (error, stack) => {Toast(error)},
 ///       loading: () => {CircularProgressIndicator()},
 ///    );
-final apiResponseProvider = FutureProvider.autoDispose((ref) {
+/*final apiResponseProvider = FutureProvider.autoDispose((ref) {
 // ApiRepository().getApiResponse(param 1, param 2); returns Future<ResponseType>
-});
+});*/
 
 /// use ref.read(someProvider) when it is needed to read provider state only once, example in initState() or button onPressed to change state
 /// use ref.watch(someProvider) when it is needed to listen/observe changes in provider, used in build() for widget rebuild
-
-/// Caching - ref.keepAlive() inside contentProvider is used to preserve the state so that request wont fire again if the user leaves
-/// and re-enters the same screen.
-
-/// Timeout based Caching
-//   final link = ref.keepAlive();
-//
-//   final timer = Timer(const Duration(seconds: 30), () {
-//     link.close();
-//   });
-//
-//   ref.onDispose(() => timer.cancel());
-
-/// Extension function for re-usability
-//  extension AutoDisposeRefCache on AutoDisposeRef {
-//    void cacheFor(Duration duration) {
-//      final link = keepAlive();
-//      final timer = Timer(duration, () => link.close());
-//      onDispose(() => timer.cancel());
-//    }
-//  }
-//
-//  final myProvider = Provider.autoDispose<int>((ref) {
-//    ref.cacheFor(const Duration(minutes: 5));
-//    return 42;
-//  });
 
 /// used generally in whole pages
 class HomeConsumerWidget extends ConsumerWidget {

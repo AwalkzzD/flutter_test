@@ -48,13 +48,6 @@ class _HelloWorldWidgetState extends ConsumerState<HelloWorldWidget> {
   Widget build(BuildContext context) {
     final displayText = ref.watch(counterStateProvider);
 
-/*final apiResponseAsync = ref.watch(apiResponseProvider);
-
-    apiResponseAsync.when(
-        data: (responseType) => {Text(responseType)},
-        error: (error, stack) => {Toast(error)},
-        loading: () => {CircularProgressIndicator()});*/
-
     ref.listen<int>(counterStateProvider, (previous, current) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("$current")));
