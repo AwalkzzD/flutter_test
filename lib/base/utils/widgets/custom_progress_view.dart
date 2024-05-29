@@ -23,7 +23,3 @@ class CustomProgressView extends StatelessWidget {
     );
   }
 }
-
-/*color: ((progressType == ProgressType.LOADING)
-? Colors.green
-: Colors.red),*/

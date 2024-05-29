@@ -3,6 +3,7 @@ class AppApiCalls {
 
   /// Timeout Constants
   static const int defaultResponseCacheTimeout = 10;
+
   static const int connectionTimeout = 5;
   static const int readTimeout = 5;
   static const int writeTimeout = 5;

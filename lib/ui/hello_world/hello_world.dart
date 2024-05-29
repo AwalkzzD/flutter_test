@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sample/base/screens/base_widget.dart';
 import 'package:sample/ui/api_call/get_users.dart';
+import 'package:sample/ui/local_data/local_data.dart';
 
 /// state provider used to store simple state objects that can change
 /// to change/access ref.read(counterStateProvider.notifier).state = "hello"
@@ -35,22 +37,20 @@ final timeProvider = StateNotifierProvider<Time, DateTime>((ref) {
 });
 
 /// use ConsumerStatefulWidget when need of stateful widget, create state class by extending ConsumerState
-class HelloWorldWidget extends ConsumerStatefulWidget {
+class HelloWorldWidget extends BaseWidget {
   const HelloWorldWidget({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _HelloWorldWidgetState();
+  BaseWidgetState<BaseWidget> getState() => _HelloWorldWidgetState();
 }
 
-class _HelloWorldWidgetState extends ConsumerState<HelloWorldWidget> {
+class _HelloWorldWidgetState extends BaseWidgetState<HelloWorldWidget> {
   @override
   Widget build(BuildContext context) {
     final displayText = ref.watch(counterStateProvider);
 
     ref.listen<int>(counterStateProvider, (previous, current) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("$current")));
+      showSnackBar(current.toString());
     });
 
     return Scaffold(
@@ -97,7 +97,13 @@ class _HelloWorldWidgetState extends ConsumerState<HelloWorldWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => const GetUsers())),
-                child: const Text("Api Call Screen"))
+                child: const Text("Remote Data")),
+            ElevatedButton(
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const LocalData())),
+                child: const Text("Local Screen")),
           ],
         ),
       ),
