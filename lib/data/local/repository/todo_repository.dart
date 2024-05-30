@@ -5,11 +5,20 @@ import 'package:sample/data/local/utils/local_storage_helper.dart';
 import 'package:sample/data/local/utils/sqlflite_helper.dart';
 
 class TodoRepository {
+  final FileHelper fileHelper;
+  final SqfliteHelper sqfliteHelper;
+  final LocalStorageHelper localStorageHelper;
+
+  TodoRepository({
+    required this.fileHelper,
+    required this.sqfliteHelper,
+    required this.localStorageHelper,
+  });
+
   ///------------------------- Todos Operations for Local Storage (NoSql DB) -------------------------///
   Future<List<TodoItem>?> getTodosLocalStorage() async {
     try {
-      LocalStorageHelper todoDatabase = LocalStorageHelper.instance;
-      return todoDatabase.getAll();
+      return localStorageHelper.getAll();
     } catch (ex) {
       debugPrint(ex.toString());
     }
@@ -18,8 +27,7 @@ class TodoRepository {
 
   void addTodoLocalStorage(String todoTask) {
     try {
-      LocalStorageHelper todoDatabase = LocalStorageHelper.instance;
-      todoDatabase.insert(TodoItem(todoTask: todoTask));
+      localStorageHelper.insert(TodoItem(todoTask: todoTask));
     } catch (ex) {
       debugPrint(ex.toString());
     }
@@ -28,8 +36,7 @@ class TodoRepository {
   ///------------------------- Todos Operations for Sqlite Database (Sql DB) -------------------------///
   Future<List<TodoItem>?> getTodosSqlite() async {
     try {
-      SqfliteHelper todoDatabase = SqfliteHelper.instance;
-      return todoDatabase.getAll();
+      return sqfliteHelper.getAll();
     } catch (ex) {
       debugPrint(ex.toString());
     }
@@ -38,8 +45,7 @@ class TodoRepository {
 
   Future<void> addTodoSqlite(String todoTask) async {
     try {
-      SqfliteHelper todoDatabase = SqfliteHelper.instance;
-      todoDatabase.insert(TodoItem(todoTask: todoTask));
+      sqfliteHelper.insert(TodoItem(todoTask: todoTask));
     } catch (ex) {
       debugPrint(ex.toString());
     }
@@ -48,8 +54,7 @@ class TodoRepository {
   ///------------------------- Todos Operations for Local File -------------------------///
   Future<List<TodoItem>?> getTodosFile() async {
     try {
-      FileHelper todoFile = FileHelper.instance;
-      return todoFile.getAll();
+      return fileHelper.getAll();
     } catch (ex) {
       debugPrint(ex.toString());
     }
@@ -58,8 +63,7 @@ class TodoRepository {
 
   void addTodoFile(String todoTask) {
     try {
-      FileHelper todoFile = FileHelper.instance;
-      todoFile.insert(TodoItem(todoTask: todoTask));
+      fileHelper.insert(TodoItem(todoTask: todoTask));
     } catch (ex) {
       debugPrint(ex.toString());
     }

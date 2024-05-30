@@ -1,11 +1,38 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/data/local/model/todo_item.dart';
 import 'package:sample/data/local/repository/todo_repository.dart';
+import 'package:sample/data/local/utils/file_helper.dart';
+import 'package:sample/data/local/utils/local_storage_helper.dart';
+import 'package:sample/data/local/utils/sqlflite_helper.dart';
 
 /// todoRepositoryProvider returns TodoRepository object
 final todoRepositoryProvider = Provider.autoDispose<TodoRepository>((ref) {
-  return TodoRepository();
+  final fileHelper = ref.read(fileHelperProvider);
+  final sqfliteHelper = ref.read(sqfliteHelperProvider);
+  final localStorageHelper = ref.read(localStorageHelperProvider);
+
+  return TodoRepository(
+    fileHelper: fileHelper,
+    sqfliteHelper: sqfliteHelper,
+    localStorageHelper: localStorageHelper,
+  );
+});
+
+///------------------------- Helper Providers -------------------------///
+
+final fileHelperProvider = Provider.autoDispose<FileHelper>((ref) {
+  return FileHelper.instance;
+});
+
+final sqfliteHelperProvider = Provider.autoDispose<SqfliteHelper>((ref) {
+  final instance = SqfliteHelper.instance;
+  ref.onDispose(() => instance.close());
+  return instance;
+});
+
+final localStorageHelperProvider =
+    Provider.autoDispose<LocalStorageHelper>((ref) {
+  return LocalStorageHelper.instance;
 });
 
 ///-------------------------------------------------------------------------------------
@@ -49,10 +76,3 @@ final addFileDataProvider =
   ref.read(todoRepositoryProvider).addTodoFile(todoTask);
   ref.invalidate(fileDataProvider);
 });
-
-final sqlDataNotifierProvider =
-    ChangeNotifierProvider.autoDispose<ChangeNotifier>((ref) {
-  return SqlDataNotifier();
-});
-
-class SqlDataNotifier extends ChangeNotifier {}

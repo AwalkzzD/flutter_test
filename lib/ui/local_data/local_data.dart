@@ -46,9 +46,12 @@ class _LocalDataState extends BaseWidgetState<LocalData> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("NoSql DB Data",
-                    style: GoogleFonts.robotoSlab(
-                        textStyle: const TextStyle(fontSize: 20))),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Text("NoSql DB Data",
+                      style: GoogleFonts.robotoSlab(
+                          textStyle: const TextStyle(fontSize: 20))),
+                ),
                 Expanded(
                     flex: 1,
                     child: noSqlData.when(
@@ -70,9 +73,12 @@ class _LocalDataState extends BaseWidgetState<LocalData> {
                       error: (error, stack) => getErrorView(),
                       loading: () => getLoadingView(),
                     )),
-                Text("Sql DB Data",
-                    style: GoogleFonts.robotoSlab(
-                        textStyle: const TextStyle(fontSize: 20))),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, bottom: 5),
+                  child: Text("Sql DB Data",
+                      style: GoogleFonts.robotoSlab(
+                          textStyle: const TextStyle(fontSize: 20))),
+                ),
                 Expanded(
                     flex: 1,
                     child: sqlData.when(
@@ -94,9 +100,12 @@ class _LocalDataState extends BaseWidgetState<LocalData> {
                       error: (error, stack) => getErrorView(),
                       loading: () => getLoadingView(),
                     )),
-                Text("Local File Data",
-                    style: GoogleFonts.robotoSlab(
-                        textStyle: const TextStyle(fontSize: 20))),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, bottom: 5),
+                  child: Text("Local File Data",
+                      style: GoogleFonts.robotoSlab(
+                          textStyle: const TextStyle(fontSize: 20))),
+                ),
                 Expanded(
                     flex: 1,
                     child: fileData.when(
