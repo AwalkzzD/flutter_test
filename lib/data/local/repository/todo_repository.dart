@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
-import 'package:localstore/localstore.dart';
 import 'package:sample/data/local/model/todo_item.dart';
+import 'package:sample/data/local/utils/file_helper.dart';
+import 'package:sample/data/local/utils/local_storage_helper.dart';
+import 'package:sample/data/local/utils/sqlflite_helper.dart';
 
 class TodoRepository {
   ///------------------------- Todos Operations for Local Storage (NoSql DB) -------------------------///
   Future<List<TodoItem>?> getTodosLocalStorage() async {
     try {
-      //todo: fetch todo list from local storage (no sql db)
-      final db = Localstore.instance;
-      return todoListFromMap((await db.collection('todos').get())!);
+      LocalStorageHelper todoDatabase = LocalStorageHelper.instance;
+      return todoDatabase.getAll();
     } catch (ex) {
       debugPrint(ex.toString());
     }
@@ -17,48 +18,50 @@ class TodoRepository {
 
   void addTodoLocalStorage(String todoTask) {
     try {
-      final db = Localstore.instance;
-      db.collection('todos').doc().set({'todoTask': todoTask});
+      LocalStorageHelper todoDatabase = LocalStorageHelper.instance;
+      todoDatabase.insert(TodoItem(todoTask: todoTask));
     } catch (ex) {
-      debugPrint("Something went wrong");
+      debugPrint(ex.toString());
     }
   }
 
   ///------------------------- Todos Operations for Sqlite Database (Sql DB) -------------------------///
   Future<List<TodoItem>?> getTodosSqlite() async {
     try {
-      //todo: fetch todo list from sqlite database (sql db)
+      SqfliteHelper todoDatabase = SqfliteHelper.instance;
+      return todoDatabase.getAll();
     } catch (ex) {
-      debugPrint("Something went wrong");
+      debugPrint(ex.toString());
     }
     return null;
   }
 
-  void addTodoSqlite(String todoTask) {
+  Future<void> addTodoSqlite(String todoTask) async {
     try {
-      //todo: add todo to sqlite database (sql db)
-      debugPrint(todoTask);
+      SqfliteHelper todoDatabase = SqfliteHelper.instance;
+      todoDatabase.insert(TodoItem(todoTask: todoTask));
     } catch (ex) {
-      debugPrint("Something went wrong");
+      debugPrint(ex.toString());
     }
   }
 
   ///------------------------- Todos Operations for Local File -------------------------///
   Future<List<TodoItem>?> getTodosFile() async {
     try {
-      //todo: fetch todo list from local file
+      FileHelper todoFile = FileHelper.instance;
+      return todoFile.getAll();
     } catch (ex) {
-      debugPrint("Something went wrong");
+      debugPrint(ex.toString());
     }
     return null;
   }
 
   void addTodoFile(String todoTask) {
     try {
-      //todo: add todo to local file
-      debugPrint(todoTask);
+      FileHelper todoFile = FileHelper.instance;
+      todoFile.insert(TodoItem(todoTask: todoTask));
     } catch (ex) {
-      debugPrint("Something went wrong");
+      debugPrint(ex.toString());
     }
   }
 }

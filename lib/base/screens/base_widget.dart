@@ -17,12 +17,22 @@ abstract class BaseWidgetState<T extends BaseWidget> extends ConsumerState<T> {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
+  void hideSoftInput() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   Widget getLoadingView() {
     return const CustomProgressView(progressType: ProgressType.loading);
   }
 
-  void hideSoftInput() {
-    FocusManager.instance.primaryFocus?.unfocus();
+  Widget getDataEmptyView() {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomProgressView(progressType: ProgressType.noData),
+        Text("No Data Found"),
+      ],
+    );
   }
 
   Widget getErrorView() {

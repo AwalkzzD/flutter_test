@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/data/local/model/todo_item.dart';
 import 'package:sample/data/local/repository/todo_repository.dart';
@@ -18,6 +19,7 @@ final noSqlDataProvider = FutureProvider.autoDispose<List<TodoItem>?>((ref) {
 final addNoSqlDataProvider =
     Provider.autoDispose.family<void, String>((ref, todoTask) {
   ref.read(todoRepositoryProvider).addTodoLocalStorage(todoTask);
+  ref.invalidate(noSqlDataProvider);
 });
 
 ///-------------------------------------------------------------------------------------
@@ -31,6 +33,7 @@ final sqlDataProvider = FutureProvider.autoDispose<List<TodoItem>?>((ref) {
 final addSqlDataProvider =
     Provider.autoDispose.family<void, String>((ref, todoTask) {
   ref.read(todoRepositoryProvider).addTodoSqlite(todoTask);
+  ref.invalidate(sqlDataProvider);
 });
 
 ///-------------------------------------------------------------------------------------
@@ -44,4 +47,12 @@ final fileDataProvider = FutureProvider.autoDispose<List<TodoItem>?>((ref) {
 final addFileDataProvider =
     Provider.autoDispose.family<void, String>((ref, todoTask) {
   ref.read(todoRepositoryProvider).addTodoFile(todoTask);
+  ref.invalidate(fileDataProvider);
 });
+
+final sqlDataNotifierProvider =
+    ChangeNotifierProvider.autoDispose<ChangeNotifier>((ref) {
+  return SqlDataNotifier();
+});
+
+class SqlDataNotifier extends ChangeNotifier {}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ProgressType { loading, error }
+enum ProgressType { loading, error, noData }
 
 class CustomProgressView extends StatelessWidget {
   final ProgressType progressType;
@@ -17,6 +17,7 @@ class CustomProgressView extends StatelessWidget {
           color: switch (progressType) {
             ProgressType.loading => Colors.green,
             ProgressType.error => Colors.red,
+            ProgressType.noData => Colors.black,
           },
         ),
       ),

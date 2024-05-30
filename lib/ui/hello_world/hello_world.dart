@@ -103,7 +103,7 @@ class _HelloWorldWidgetState extends BaseWidgetState<HelloWorldWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => const LocalData())),
-                child: const Text("Local Screen")),
+                child: const Text("Local Data")),
           ],
         ),
       ),

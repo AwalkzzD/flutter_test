@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sample/base/screens/base_widget.dart';
 import 'package:sample/base/utils/widgets/custom_button_view.dart';
 import 'package:sample/base/utils/widgets/custom_list_view.dart';
@@ -45,67 +46,73 @@ class _LocalDataState extends BaseWidgetState<LocalData> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("NoSql DB Data"),
+                Text("NoSql DB Data",
+                    style: GoogleFonts.robotoSlab(
+                        textStyle: const TextStyle(fontSize: 20))),
                 Expanded(
                     flex: 1,
                     child: noSqlData.when(
                       data: (noSqlTodoData) {
                         // check if noSqlTodoData null return error view else return list of todos
                         return noSqlTodoData != null
-                            ? CustomListView<TodoItem>(
-                                data: noSqlTodoData,
-                                titleBuilder: (todoItem) =>
-                                    Text(todoItem.todoTask),
-                                leadingIcon: const Icon(Icons.task),
-                                onTap: (todoItem) {},
-                                borderColor: Colors.green,
-                                borderWidth: 1.5,
-                                borderRadius: 12,
-                              )
+                            ? (noSqlTodoData.isNotEmpty)
+                                ? CustomListView<TodoItem>(
+                                    separatorHeight: 1,
+                                    data: noSqlTodoData,
+                                    titleBuilder: (todoItem) =>
+                                        Text(todoItem.todoTask),
+                                    leadingIcon: const Icon(Icons.task),
+                                    onTap: (todoItem) {},
+                                  )
+                                : getDataEmptyView()
                             : getErrorView();
                       },
                       error: (error, stack) => getErrorView(),
                       loading: () => getLoadingView(),
                     )),
-                const Text("Sql DB Data"),
-                Flexible(
+                Text("Sql DB Data",
+                    style: GoogleFonts.robotoSlab(
+                        textStyle: const TextStyle(fontSize: 20))),
+                Expanded(
                     flex: 1,
                     child: sqlData.when(
                       data: (sqlTodoData) {
                         // check if sqlTodoData null return error view else return list of todos
                         return sqlTodoData != null
-                            ? CustomListView<TodoItem>(
-                                data: sqlTodoData,
-                                titleBuilder: (todoItem) =>
-                                    Text(todoItem.todoTask),
-                                leadingIcon: const Icon(Icons.task),
-                                onTap: (todoItem) {},
-                                borderColor: Colors.green,
-                                borderWidth: 1.5,
-                                borderRadius: 12,
-                              )
+                            ? (sqlTodoData.isNotEmpty)
+                                ? CustomListView<TodoItem>(
+                                    separatorHeight: 1,
+                                    data: sqlTodoData,
+                                    titleBuilder: (todoItem) =>
+                                        Text(todoItem.todoTask),
+                                    leadingIcon: const Icon(Icons.task),
+                                    onTap: (todoItem) {},
+                                  )
+                                : getDataEmptyView()
                             : getErrorView();
                       },
                       error: (error, stack) => getErrorView(),
                       loading: () => getLoadingView(),
                     )),
-                const Text("Local File Data"),
-                Flexible(
+                Text("Local File Data",
+                    style: GoogleFonts.robotoSlab(
+                        textStyle: const TextStyle(fontSize: 20))),
+                Expanded(
                     flex: 1,
                     child: fileData.when(
                       data: (fileTodoData) {
                         // check if fileTodoData null return error view else return list of todos
                         return fileTodoData != null
-                            ? CustomListView<TodoItem>(
-                                data: fileTodoData,
-                                titleBuilder: (todoItem) =>
-                                    Text(todoItem.todoTask),
-                                leadingIcon: const Icon(Icons.task),
-                                onTap: (todoItem) {},
-                                borderColor: Colors.green,
-                                borderWidth: 1.5,
-                                borderRadius: 12,
-                              )
+                            ? (fileTodoData.isNotEmpty)
+                                ? CustomListView<TodoItem>(
+                                    separatorHeight: 1,
+                                    data: fileTodoData,
+                                    titleBuilder: (todoItem) =>
+                                        Text(todoItem.todoTask),
+                                    leadingIcon: const Icon(Icons.task),
+                                    onTap: (todoItem) {},
+                                  )
+                                : getDataEmptyView()
                             : getErrorView();
                       },
                       error: (error, stack) => getErrorView(),
@@ -131,11 +138,11 @@ class _LocalDataState extends BaseWidgetState<LocalData> {
                 }, radius: 10, elevation: 5, textColor: Colors.black),
                 CustomButtonView("SQL DB", () {
                   toggleOptions();
-                  showAddTaskDialog(context, addNoSqlDataProvider);
+                  showAddTaskDialog(context, addSqlDataProvider);
                 }, radius: 10, elevation: 5, textColor: Colors.black),
                 CustomButtonView("Local File", () {
                   toggleOptions();
-                  showAddTaskDialog(context, addNoSqlDataProvider);
+                  showAddTaskDialog(context, addFileDataProvider);
                 }, radius: 10, elevation: 5, textColor: Colors.black),
                 const SizedBox(height: 15)
               ],
